@@ -1,0 +1,32 @@
+.keyboard-wrapper {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.keyboard-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    min-width: 600px;
+    min-height: 50px;
+}
+
+.keyboard-letter {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-grow: 1;
+    border-radius: 5px;
+    border: none;
+    background-color: #dce1ed;
+    justify-content: center;
+}
+
+.used-letter {
+    background-color: #64666c; 
+}
