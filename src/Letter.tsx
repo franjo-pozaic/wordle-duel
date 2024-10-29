@@ -15,7 +15,7 @@ export const Letter: React.FC<LetterProps> = ({ char, status }) => {
     }
     return (
         <>
-            <div className={`letter ${classByStatus[status]}`}>
+            <div role="letter" className={`letter ${classByStatus[status]}`}>
                 {char}
             </div>
         </>

@@ -33,6 +33,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onE
                     <div key={index} className="keyboard-row">
                         {row.map(letter =>
                             <div
+                                role="keyboard-letter"
                                 key={letter}
                                 onClick={() => handleKeyPress(letter)}
                                 className={`keyboard-letter ${usedLetters.has(letter) ? 'used-letter' : ''}`}>
