@@ -1,13 +1,10 @@
 import React from "react";
-import { Status } from "./App";
-
-
+import { Status } from "./models";
 
 type LetterProps = {
     char: string;
     status: Status;
 }
-
 
 export const Letter: React.FC<LetterProps> = ({ char, status }) => {
     const classByStatus: Record<Status, string> = {

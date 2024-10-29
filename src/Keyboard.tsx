@@ -1,4 +1,3 @@
-import { Letter } from "./App";
 import "./Keyboard.css"
 type KeyboardProps = {
     usedLetters: Set<string>;
@@ -16,6 +15,9 @@ const qwertyKeyboard = [
 
 export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onEnter, onDelete }) => {
     const handleKeyPress = (key: string) => {
+        if (usedLetters.has(key)) {
+            return;
+        }
         if (key === 'ENT') {
             onEnter();
         } else if (key === 'DEL') {

@@ -1,26 +1,30 @@
 import { useCallback, useMemo, useState } from 'react'
 import './App.css'
-import { Letter } from './Letter';
+import { Letter} from './Letter';
 import { Keyboard } from './Keyboard';
+import { Letter as LetterModel , Status } from './models';
 
-export type Status = 'INITIAL' | 'WRONG' | 'PARTIAL' | 'CORRECT'
-
-export type Letter = {
-  char: string;
-  status: Status;
-}
 
 const ALL_WORDS = [
-  'BAWDY',
+  // 'BAWDY',
   // 'CORGY',
   // 'SPEAK',
-  // 'APPLE',
+  'APPLE',
   // 'DOORS',
   // 'BOXES',
   // 'COUCH'
 ]
 
-const Guess: React.FC<{ word: Letter[] }> = ({ word }) => {
+const Victory: React.FC = () => {
+  return (<>
+      <div className='victory'>
+        You won!
+      </div>
+    </>
+  )
+}
+
+const Guess: React.FC<{ word: LetterModel[] }> = ({ word }) => {
   return (
     <>
       {word.map((letter, index) => <Letter key={`${letter.char}${index}`} char={letter.char} status={letter.status} />)}
@@ -28,22 +32,12 @@ const Guess: React.FC<{ word: Letter[] }> = ({ word }) => {
   )
 }
 
-const l: Letter = { char: '', status: 'INITIAL' };
+const l: LetterModel = { char: '', status: 'INITIAL' };
 
-const initialHistory: Letter[][] = []
-
-function getUsedLetters(letters: Letter[][]): string[] {
-  const uniqueLetters = new Set<string>();
-  letters.forEach(
-    word => word.forEach(
-      letter => uniqueLetters.add(letter.char)
-    )
-  );
-  return [...uniqueLetters];
-}
+const initialHistory: LetterModel[][] = []
 
 function App() {
-  const pickedWord = ALL_WORDS[0]
+  const pickedWord = ALL_WORDS[Math.floor(Math.random() * ALL_WORDS.length)];
   const [history, setHistory] = useState(initialHistory)
   const [currentGuess, setCurrentGuess] = useState('')
 
@@ -75,7 +69,7 @@ function App() {
       .map((letter, index) => ({
         char: letter,
         status: getStatus(letter, index)
-      } as Letter));
+      } as LetterModel));
     setHistory(prev => [...prev, guess])
   }, [currentGuess]);
 
@@ -95,7 +89,7 @@ function App() {
       .map((letter) => ({
         char: letter,
         status: 'INITIAL'
-      } as Letter));
+      } as LetterModel));
 
     const filledBoard = [...history, guess];
     const missingRows = 6 - filledBoard.length
@@ -104,6 +98,14 @@ function App() {
     }
     return filledBoard;
   }, [currentGuess]);
+
+  const isVictory = useMemo(() => {
+    if (history.length === 0) {
+      return false;
+    }
+    const lastGuess = history[history.length - 1].map(l => l.char).join('');
+    return lastGuess === pickedWord;
+  }, [history]);
 
   return (
     <>
@@ -119,6 +121,9 @@ function App() {
               key={word.map(l => l.char).join('') + index.toString()}
               word={word} />)}
           </div>
+          {
+            isVictory && <Victory />
+          }
           <div className='item'>
             <Keyboard
               onKeyPress={handleKeyboardPress}

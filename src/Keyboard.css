@@ -28,5 +28,6 @@
 }
 
 .used-letter {
-    background-color: #64666c; 
+    background-color: #64666c;
+    cursor: auto;
 }
