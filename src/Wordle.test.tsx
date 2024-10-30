@@ -44,7 +44,7 @@ describe('Wordle component', () => {
     describe.each([
         ['correct guess', [word], 'You won!'],
         ['failed guess', ['AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF'], 'Try again!']
-    ])('%s', (scenario, guessWords, expectedText) => {
+    ])('%s', (_, guessWords, expectedText) => {
 
         
         beforeEach(async () => {
@@ -53,7 +53,6 @@ describe('Wordle component', () => {
             for (let word of guessWords) {
                 await enterWord(word);
                 await clickLetter('ENT');
-
             }
         });
         
