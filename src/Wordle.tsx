@@ -5,10 +5,10 @@ import { Keyboard } from './Keyboard';
 import { Letter as LetterModel , Status } from './models';
 
 
-const Victory: React.FC = () => {
+const EndingMessage: React.FC<{ result: 'WIN' | 'LOSS' }> = ({ result }) => {
   return (<>
-      <div className='victory'>
-        You won!
+      <div role="ending-message" className='victory'>
+        { result === 'WIN' ? 'You won!' : 'Try again!' }
       </div>
     </>
   )
@@ -88,24 +88,33 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
     return filledBoard;
   }, [currentGuess]);
 
-  const isVictory = useMemo(() => {
+  const result = useMemo(() => {
     if (history.length === 0) {
-      return false;
+      return undefined;
     }
     const lastGuess = history[history.length - 1].map(l => l.char).join('');
-    return lastGuess === word;
+    
+    if (lastGuess === word) {
+      return 'WIN'
+    } else if (history.length === 6) {
+      return 'LOSS';
+    } else {
+      return undefined;
+    }
+
   }, [history]);
 
   return (
     <>
         <div className='wordle-container'>
           <div className='wordle-grid item'>
-            {boardData.map((word, index) => <Guess
+            {boardData.map((word, index) => 
+            <Guess
               key={word.map(l => l.char).join('') + index.toString()}
               word={word} />)}
           </div>
           {
-            isVictory && <Victory />
+            result && <EndingMessage result={result} />
           }
           <div className='item'>
             <Keyboard
