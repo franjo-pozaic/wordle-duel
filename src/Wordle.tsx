@@ -67,8 +67,8 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
   }, [currentGuess]);
 
   const usedLetters = useMemo(() => {
-    const usedLetters = history.flatMap(letters => letters.map(l => l.char));
-    return new Set(usedLetters)
+    const usedLetters = history.flatMap(x => x);
+    return [...new Set(usedLetters)];
   }, [history]);
 
   const boardData = useMemo(() => {

@@ -1,6 +1,8 @@
 import "./Keyboard.css"
+import { Letter, Status } from "./models";
+
 type KeyboardProps = {
-    usedLetters: Set<string>;
+    usedLetters: Letter[];
     onKeyPress: (key: string) => void,
     onEnter: () => void,
     onDelete: () => void
@@ -12,12 +14,22 @@ const qwertyKeyboard = [
     ['DEL', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'ENT']
 ];
 
+const classByStatus: Record<Status, string> = {
+    CORRECT: 'correct',
+    PARTIAL: 'partial',
+    INITIAL: '',
+    WRONG: 'wrong'
+}
 
 export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onEnter, onDelete }) => {
-    const handleKeyPress = (key: string) => {
-        if (usedLetters.has(key)) {
-            return;
+    const getClass = (letter: string) => {
+        const usedLetter = usedLetters.find(x => x.char === letter);
+        if (!usedLetter) {
+            return '';
         }
+        return classByStatus[usedLetter.status];
+    }
+    const handleKeyPress = (key: string) => {
         if (key === 'ENT') {
             onEnter();
         } else if (key === 'DEL') {
@@ -36,7 +48,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onE
                                 role="keyboard-letter"
                                 key={letter}
                                 onClick={() => handleKeyPress(letter)}
-                                className={`keyboard-letter ${usedLetters.has(letter) ? 'used-letter' : ''}`}>
+                                className={`keyboard-letter ${getClass(letter)}`}>
                                 {letter}
                             </div>
                         )}

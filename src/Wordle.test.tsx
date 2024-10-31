@@ -36,8 +36,8 @@ describe('Wordle component', () => {
 
         const squares = await screen.findAllByRole('letter');
         
-        expect(squares.at(0)?.className).toBe('letter ')
-        expect(squares.at(0)?.innerHTML).toBe('A')
+        expect(squares.at(0)?.className).toBe('letter ');
+        expect(squares.at(0)?.innerHTML).toBe('A');
     });
 
     const word = 'APPLE';
@@ -45,8 +45,6 @@ describe('Wordle component', () => {
         ['correct guess', [word], 'You won!'],
         ['failed guess', ['AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF'], 'Try again!']
     ])('%s', (_, guessWords, expectedText) => {
-
-        
         beforeEach(async () => {
             render(<Wordle word={word} key={1} />);
 
@@ -66,6 +64,36 @@ describe('Wordle component', () => {
                 expect(squares.at(index)?.className).toBe('letter correct');
                 expect(squares.at(index)?.innerHTML).toBe(letter);
             }
+        });
+    });
+
+    describe('keyboard letter styling', () => {
+        const getKeyboardLetterElement = async (letter: string) => {
+            const correctLetter = await screen.findAllByRole('keyboard-letter');
+            return correctLetter.find(x => x.innerHTML.includes(letter));
+        }
+        
+        beforeEach(async () => {
+            const partiallyGoodGuess = 'PADLE';
+            render(<Wordle word={'APPLE'} key={1} />);
+
+            await enterWord(partiallyGoodGuess);
+            await clickLetter('ENT');
+        });
+        
+        test('should show the correct letter style', async () => {
+            const correctLetter = await getKeyboardLetterElement('E');
+            expect(correctLetter!.className).toBe('keyboard-letter correct');
+        });
+
+        test('should show the partial letter style', async () => {
+            const correctLetter = await getKeyboardLetterElement('P');
+            expect(correctLetter!.className).toBe('keyboard-letter partial');
+        });
+
+        test('should show the wrong letter style', async () => {
+            const correctLetter = await getKeyboardLetterElement('D');
+            expect(correctLetter!.className).toBe('keyboard-letter wrong');
         });
     });
 

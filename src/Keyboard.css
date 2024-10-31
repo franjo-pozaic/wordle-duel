@@ -31,3 +31,15 @@
     background-color: #64666c;
     cursor: auto;
 }
+
+.keyboard-letter.correct {
+    background-color: #79b851;
+}
+
+.keyboard-letter.partial {
+    background-color: #f3c237;
+}
+
+.keyboard-letter.wrong {
+    background-color: #a4aec4;
+}
