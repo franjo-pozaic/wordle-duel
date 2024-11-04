@@ -8,6 +8,7 @@ describe('Keyboard component', () => {
     test('Displays the correct initial letters with correct style', async () => {
         render(<Keyboard 
             usedLetters={[]} 
+            disable={false} 
             onDelete={mockHandlerFunction}
             onEnter={mockHandlerFunction}
             onKeyPress={mockHandlerFunction}/>
@@ -26,7 +27,8 @@ describe('Keyboard component', () => {
         ]
     )('%s', (testCase, letterData, expectedCSSClass) => {
         beforeEach(async () => {
-            render(<Keyboard 
+            render(<Keyboard
+                disable={false} 
                 usedLetters={[letterData]}
                 onDelete={mockHandlerFunction}
                 onEnter={mockHandlerFunction}

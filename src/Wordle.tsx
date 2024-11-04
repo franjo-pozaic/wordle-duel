@@ -121,7 +121,8 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
               onKeyPress={handleKeyboardPress}
               usedLetters={usedLetters}
               onDelete={handleDeletePress}
-              onEnter={handleEnterPress} />
+              onEnter={handleEnterPress}
+              disable={Boolean(result)} />
           </div>
         </div>
     </>

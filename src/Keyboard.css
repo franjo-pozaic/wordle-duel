@@ -27,11 +27,6 @@
     justify-content: center;
 }
 
-.used-letter {
-    background-color: #64666c;
-    cursor: auto;
-}
-
 .keyboard-letter.correct {
     background-color: #79b851;
 }

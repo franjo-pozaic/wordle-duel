@@ -65,6 +65,16 @@ describe('Wordle component', () => {
                 expect(squares.at(index)?.innerHTML).toBe(letter);
             }
         });
+
+        test('should block further text clicks after the game if over', async () => {
+            await enterWord('WRONG');
+            const squares = await screen.findAllByRole('letter');
+            
+            'WRONG'.split('').forEach(letter => {
+               const square = squares.find(x => x.innerHTML === letter);
+               expect(square).toBeUndefined();
+            });
+        });
     });
 
     describe('keyboard letter styling', () => {

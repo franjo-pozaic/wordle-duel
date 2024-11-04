@@ -5,7 +5,8 @@ type KeyboardProps = {
     usedLetters: Letter[];
     onKeyPress: (key: string) => void,
     onEnter: () => void,
-    onDelete: () => void
+    onDelete: () => void,
+    disable: boolean
 }
 
 const qwertyKeyboard = [
@@ -21,7 +22,7 @@ const classByStatus: Record<Status, string> = {
     WRONG: 'wrong'
 }
 
-export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onEnter, onDelete }) => {
+export const Keyboard: React.FC<KeyboardProps> = ({ disable, usedLetters, onKeyPress, onEnter, onDelete }) => {
     const getClass = (letter: string) => {
         const usedLetter = usedLetters.find(x => x.char === letter);
         if (!usedLetter) {
@@ -30,6 +31,9 @@ export const Keyboard: React.FC<KeyboardProps> = ({ usedLetters, onKeyPress, onE
         return classByStatus[usedLetter.status];
     }
     const handleKeyPress = (key: string) => {
+        if (disable) {
+            return;
+        }
         if (key === 'ENT') {
             onEnter();
         } else if (key === 'DEL') {
