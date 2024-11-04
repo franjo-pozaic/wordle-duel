@@ -107,4 +107,19 @@ describe('Wordle component', () => {
         });
     });
 
+    test('should delete the last character when you press DEL', async () => {
+        render(<Wordle word={word} key={1} />);
+
+        await enterWord('AB');
+        
+        const squares = await screen.findAllByRole('letter');
+        expect(squares.at(0)?.innerHTML).toBe('A');
+        expect(squares.at(1)?.innerHTML).toBe('B');
+        
+        await clickLetter('DEL');
+
+        const squaresAfterDelete = await screen.findAllByRole('letter'); 
+        expect(squaresAfterDelete.at(0)?.innerHTML).toBe('A');
+        expect(squaresAfterDelete.at(1)?.innerHTML).toBe(' ');
+    });
 });
