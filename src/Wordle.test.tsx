@@ -22,7 +22,7 @@ describe('Wordle component', () => {
         const squares = await screen.findAllByRole('letter');
 
         squares.forEach(div => {
-            expect(div.className).toBe('letter ');
+            expect(div.className).toBe('letter initial');
         });
         expect(squares).toHaveLength(30);
     });
@@ -36,7 +36,7 @@ describe('Wordle component', () => {
 
         const squares = await screen.findAllByRole('letter');
         
-        expect(squares.at(0)?.className).toBe('letter ');
+        expect(squares.at(0)?.className).toBe('letter initial');
         expect(squares.at(0)?.innerHTML).toBe('A');
     });
 
