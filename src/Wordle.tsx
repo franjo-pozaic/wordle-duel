@@ -2,7 +2,10 @@ import { useCallback, useMemo, useState } from 'react'
 import './Wordle.css'
 import { Letter} from './Letter';
 import { Keyboard } from './Keyboard';
-import { Letter as LetterModel , Status } from './models';
+import { Letter as LetterModel } from './models';
+import { getBoardData } from './utils/boardUtils';
+import { getResult } from './utils/resultUtils';
+import { getLetterModel, getUsedLetters } from './utils/letterUtils';
 
 
 const EndingMessage: React.FC<{ result: 'WIN' | 'LOSS' }> = ({ result }) => {
@@ -22,24 +25,12 @@ const Guess: React.FC<{ word: LetterModel[] }> = ({ word }) => {
   )
 }
 
-const l: LetterModel = { char: '', status: 'INITIAL' };
 
 const initialHistory: LetterModel[][] = []
 
 export const Wordle: React.FC<{ word: string }> = ({ word }) => {
   const [history, setHistory] = useState(initialHistory)
   const [currentGuess, setCurrentGuess] = useState('')
-
-  function getStatus(letter: string, index: number): Status {
-    const upperCaseLetter = letter.toUpperCase();
-    if (word[index] === upperCaseLetter) {
-      return 'CORRECT'
-    } else if (word.includes(upperCaseLetter)) {
-      return 'PARTIAL'
-    } else {
-      return 'WRONG'
-    }
-  }
 
   const handleKeyboardPress = useCallback((letter: string) => {
     if (currentGuess.length === 5) {
@@ -53,12 +44,7 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
       return;
     }
     setCurrentGuess('')
-    const guess = currentGuess
-      .split('')
-      .map((letter, index) => ({
-        char: letter,
-        status: getStatus(letter, index)
-      } as LetterModel));
+    const guess = getLetterModel(currentGuess, word); 
     setHistory(prev => [...prev, guess])
   }, [currentGuess]);
 
@@ -66,43 +52,9 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
     setCurrentGuess(currentGuess.slice(0, -1));
   }, [currentGuess]);
 
-  const usedLetters = useMemo(() => {
-    const usedLetters = history.flatMap(x => x);
-    return [...new Set(usedLetters)];
-  }, [history]);
-
-  const boardData = useMemo(() => {
-    const guess = currentGuess
-      .padEnd(5, ' ')
-      .split('')
-      .map((letter) => ({
-        char: letter,
-        status: 'INITIAL'
-      } as LetterModel));
-
-    const filledBoard = [...history, guess];
-    const missingRows = 6 - filledBoard.length
-    for (let i = 0; i < missingRows; i++) {
-      filledBoard.push([l, l, l, l, l])
-    }
-    return filledBoard;
-  }, [currentGuess]);
-
-  const result = useMemo(() => {
-    if (history.length === 0) {
-      return undefined;
-    }
-    const lastGuess = history[history.length - 1].map(l => l.char).join('');
-    
-    if (lastGuess === word) {
-      return 'WIN'
-    } else if (history.length === 6) {
-      return 'LOSS';
-    } else {
-      return undefined;
-    }
-
-  }, [history]);
+  const usedLetters = useMemo(() => getUsedLetters(history), [history]);
+  const boardData = useMemo(() => getBoardData(history, currentGuess), [currentGuess]);
+  const result = useMemo(() => getResult(history, word), [history]);
 
   return (
     <>
