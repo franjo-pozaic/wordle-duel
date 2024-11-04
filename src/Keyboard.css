@@ -17,24 +17,12 @@
 .keyboard-letter {
     display: flex;
     align-items: center;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-large);
     cursor: pointer;
     flex-grow: 1;
     border-radius: 5px;
     border: none;
     background-color: #dce1ed;
     justify-content: center;
-}
-
-.keyboard-letter.correct {
-    background-color: #79b851;
-}
-
-.keyboard-letter.partial {
-    background-color: #f3c237;
-}
-
-.keyboard-letter.wrong {
-    background-color: #a4aec4;
 }

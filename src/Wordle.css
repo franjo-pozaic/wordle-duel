@@ -21,33 +21,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-large);
     text-transform: uppercase;
-    background-color: #fbfcff;
     border: 2px solid #dee1e9;
     border-radius: 5px;
-    color: #333;
+    color: var(--font-color-initial);
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Wordle style color indicators */
-.letter.correct {
-    background-color: #79b851;
-    /* Correct position */
-    color: white;
-}
-
-.letter.partial {
-    background-color: #f3c237;
-    /* Correct letter, wrong position */
-    color: white;
-}
-
-.letter.wrong {
-    background-color: #a4aec4;
-    /* Incorrect letter */
-    color: white;
 }
 
 /* Container for optional alignment */

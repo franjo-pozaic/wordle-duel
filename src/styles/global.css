@@ -1,0 +1,42 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+
+:root {
+    --color-correct: #79b851;
+    --color-partial: #f3c237;
+    --color-wrong: #a4aec4;
+    --font-color-initial: white;
+    --font-size-large: 24px;
+    --font-weight-large: 700;
+    --border-radius: 5px;
+}
+
+.keyboard-letter.correct,
+.letter.correct {
+    background-color: var(--color-correct);
+}
+
+.keyboard-letter.partial,
+.letter.partial {
+    background-color: var(--color-partial);
+}
+
+.keyboard-letter.wrong,
+.letter.wrong {
+    background-color: var(--color-wrong);
+}
+
+.letter.initial {
+    color: #333;
+}
+
+.keyboard-letter {
+    background-color: var(--color-wrong);
+    font-size: var(--font-size-large);
+    border-radius: var(--border-radius);
+}
