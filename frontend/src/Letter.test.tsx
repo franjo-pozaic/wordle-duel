@@ -1,5 +1,5 @@
 import {render, screen, } from '@testing-library/react'
-import { Letter } from './Letter'
+import { Letter } from './Board'
 
 describe('Letter component', () => {
     test('Displays the correct letter', async () => {

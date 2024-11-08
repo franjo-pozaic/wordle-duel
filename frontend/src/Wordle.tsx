@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useReducer, useState } from 'react'
 import './Wordle.css'
-import { Letter } from './Letter';
 import { Keyboard } from './Keyboard';
 import { Letter as LetterModel } from './models';
 import { getBoardData } from './utils/boardUtils';
 import { getResult } from './utils/resultUtils';
 import { getLetterModel, getUsedLetters } from './utils/letterUtils';
+import { Board } from './Board';
 
 
 const EndingMessage: React.FC<{ result: 'WIN' | 'LOSS' }> = ({ result }) => {
@@ -17,13 +17,6 @@ const EndingMessage: React.FC<{ result: 'WIN' | 'LOSS' }> = ({ result }) => {
   )
 }
 
-const Guess: React.FC<{ word: LetterModel[] }> = ({ word }) => {
-  return (
-    <>
-      {word.map((letter, index) => <Letter key={`${letter.char}${index}`} char={letter.char} status={letter.status} />)}
-    </>
-  )
-}
 
 type GuessState = {
   guess: string;
@@ -78,12 +71,7 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
   return (
     <>
       <div className='wordle-container'>
-        <div className='wordle-grid item'>
-          {boardData.map((word, index) =>
-            <Guess
-              key={word.map(l => l.char).join('') + index.toString()}
-              word={word} />)}
-        </div>
+        <Board boardData={boardData} />
         {
           result && <EndingMessage result={result} />
         }
