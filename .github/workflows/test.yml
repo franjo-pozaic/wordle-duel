@@ -26,6 +26,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build
-    - run: npm run test-ci
+    - name: Install deps
+      working-directory: ./frontend
+      run: npm ci
+    - name: Build project
+      working-directory: ./frontend
+      run: npm run build
+    - name: Run tests
+      working-directory: ./frontend
+      run: npm run test-ci
