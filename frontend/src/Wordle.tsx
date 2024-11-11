@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import './Wordle.css'
 import { Keyboard } from './Keyboard';
 import { Letter as LetterModel } from './models';
@@ -22,8 +22,8 @@ type GuessState = {
   guess: string;
 }
 const initialState: GuessState = { guess: '' };
-type TypingAction = 
-  | { type: 'new_letter', payload: string; } 
+type TypingAction =
+  | { type: 'new_letter', payload: string; }
   | { type: 'delete' }
   | { type: 'initialize' }
 
@@ -40,7 +40,7 @@ const reducer = (state: GuessState, action: TypingAction) => {
 
 const initialHistory: LetterModel[][] = []
 
-export const Wordle: React.FC<{ word: string }> = ({ word }) => {
+export const Wordle: React.FC<{ word: string, onBoardChange?: (board: LetterModel[][]) => void }> = ({ word, onBoardChange }) => {
   const [history, setHistory] = useState(initialHistory);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -48,7 +48,7 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
     if (state.guess.length === 5) {
       return;
     }
-  dispatch({type: 'new_letter', payload: letter});
+    dispatch({ type: 'new_letter', payload: letter });
   }, [state.guess]);
 
   const handleEnterPress = useCallback(() => {
@@ -61,12 +61,18 @@ export const Wordle: React.FC<{ word: string }> = ({ word }) => {
   }, [state.guess]);
 
   const handleDeletePress = useCallback(() => {
-    dispatch({type: 'delete'});
+    dispatch({ type: 'delete' });
   }, [state.guess]);
 
   const usedLetters = useMemo(() => getUsedLetters(history), [history]);
   const boardData = useMemo(() => getBoardData(history, state.guess), [state]);
   const result = useMemo(() => getResult(history, word), [history]);
+
+  useEffect(() => {
+    if (onBoardChange) {
+      onBoardChange(boardData);
+    }
+  }, [boardData]);
 
   return (
     <>

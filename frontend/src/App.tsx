@@ -1,6 +1,5 @@
 import './styles/global.css';
-import { Wordle } from './Wordle';
-
+import { WordleDuel } from './WordleDuel';
 
 const ALL_WORDS = [
   // 'BAWDY',
@@ -13,7 +12,6 @@ const ALL_WORDS = [
 ]
 
 function App() {
-  const pickedWord = ALL_WORDS[Math.floor(Math.random() * ALL_WORDS.length)];
    return (
     <>
       <div>
@@ -22,7 +20,7 @@ function App() {
         </h1>
       </div>
       <div>
-        <Wordle word={pickedWord} />
+        <WordleDuel />
       </div>
     </>
   )
