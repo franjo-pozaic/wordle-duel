@@ -8,15 +8,15 @@ import { Game } from "./game.interface";
 export class GameService {
     constructor(private gameRepository: GameRepository) {}
 
-    createGame(): string {
+    createGame() {
         const game: Game = {
-            word: 'APPLE',
+            word: 'BEAST',
             created: new Date(),
             id: randomUUID(),
             players: []
         }
         this.gameRepository.createGame(game);
-        return game.id;
+        return game;
     }
 
     gameExists(id: string): boolean {
