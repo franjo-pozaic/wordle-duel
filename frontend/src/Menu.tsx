@@ -5,7 +5,7 @@ export const Menu: React.FC = () => {
     return (
         <>
             <Link to={`single`}>Single player</Link>
-            <Link to={`duel`}>Two player</Link>
+            <Link to={`duel/new`}>Two player</Link>
         </>
     )
 }

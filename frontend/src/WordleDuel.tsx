@@ -4,6 +4,7 @@ import { getSocket, socket } from './socket';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { Letter } from './models';
+import { useLoaderData } from 'react-router-dom';
 
 export type GameData = {
     word: string;
@@ -11,16 +12,25 @@ export type GameData = {
 }
 
 export const WordleDuel: React.FC<any> = () => {
+    const { gameId } = useLoaderData() as any;
     const [gameData, setGameData] = useState<GameData>();
     const socketRef = useRef<Socket | null>(null);
- 
+
     useEffect(() => {
-        fetch('http://localhost:3000/game', { 
-            method: 'POST',
-            body: JSON.stringify({})
-        })
-            .then(res => res.json())
-            .then(data => setGameData(data))
+        if (gameId === 'new') {
+            fetch('http://localhost:3000/game', {
+                method: 'POST',
+                body: JSON.stringify({})
+            })
+                .then(res => res.json())
+                .then(data => setGameData(data));
+        } else {
+            fetch(`http://localhost:3000/game/${gameId}`, {
+                method: 'GET',
+            })
+                .then(res => res.json())
+                .then(data => setGameData(data));
+        }
     }, []);
 
     useEffect(() => {
@@ -35,9 +45,10 @@ export const WordleDuel: React.FC<any> = () => {
 
     return (
         <>
-            {gameData && <Wordle 
-                word={gameData.word} 
+            {gameData && <Wordle
+                word={gameData.word}
                 onBoardChange={handleBoardChange} />}
+            {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
         </>
     )
 }

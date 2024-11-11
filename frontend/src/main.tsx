@@ -2,10 +2,14 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, LoaderFunctionArgs, RouterProvider } from 'react-router-dom'
 import { Menu } from './Menu.tsx'
 import { Wordle } from './Wordle.tsx'
 import { WordleDuel } from './WordleDuel.tsx'
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  return { gameId: params.gameId };
+}
 
 const router  = createBrowserRouter([
   {
@@ -21,8 +25,9 @@ const router  = createBrowserRouter([
         element: <Wordle word='APPLE'  />
       },
       {
-        path: 'duel',
-        element: <WordleDuel />
+        path: 'duel/:gameId',
+        element: <WordleDuel />,
+        loader
       }
     ]
   }

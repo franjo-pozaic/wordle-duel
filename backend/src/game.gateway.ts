@@ -32,9 +32,21 @@ export class GameGateway {
 		this.logger.log(`Client disconnected: ${client.id}`);
 	}
 
+    logBoardStatus(board: any[][]) {
+        board.forEach(row => {
+            let word = '';
+            row.forEach(letter => {
+                word += letter.char;
+            });
+            if (word.trimEnd().length != 0) {
+                this.logger.log(word);
+            }
+        });
+    }
+
     @SubscribeMessage('move')
 	handleChatMessage(client: Socket, payload: { board: string[][] }) {
-		this.logger.log(payload);
+		this.logBoardStatus(payload[0] as any);
         const gameId = Array.from(client.rooms)[1];
         this.logger.log(`Emitting to game: ${gameId}`);
         client.to(gameId).emit('move', payload);

@@ -19,6 +19,10 @@ export class GameService {
         return game;
     }
 
+    getGame(id: string) {
+        return this.gameRepository.getGame(id);
+    }
+
     gameExists(id: string): boolean {
         return Boolean(this.gameRepository.getGame(id));
     }
