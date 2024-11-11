@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom';
 import './styles/global.css';
 import { WordleDuel } from './WordleDuel';
 
@@ -20,7 +21,7 @@ function App() {
         </h1>
       </div>
       <div>
-        <WordleDuel />
+        <Outlet />
       </div>
     </>
   )
