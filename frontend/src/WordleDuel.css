@@ -1,0 +1,9 @@
+.duel-board-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.opponent-board {
+    filter: blur(10px);
+    transform: scale(0.8);
+}

@@ -46,7 +46,7 @@ export class GameGateway {
 
     @SubscribeMessage('move')
 	handleChatMessage(client: Socket, payload: { board: string[][] }) {
-		this.logBoardStatus(payload[0] as any);
+		this.logBoardStatus(payload as any);
         const gameId = Array.from(client.rooms)[1];
         this.logger.log(`Emitting to game: ${gameId}`);
         client.to(gameId).emit('move', payload);
