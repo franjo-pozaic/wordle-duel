@@ -48,7 +48,7 @@ describe('Wordle component', () => {
         beforeEach(async () => {
             render(<Wordle word={word} key={1} />);
 
-            for (let word of guessWords) {
+            for (const word of guessWords) {
                 await enterWord(word);
                 await clickLetter('ENT');
             }

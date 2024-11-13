@@ -58,21 +58,21 @@ export const Wordle: React.FC<{ word: string, onBoardChange?: (board: LetterMode
     const guess = getLetterModel(state.guess, word);
     dispatch({ type: 'initialize' });
     setHistory(prev => [...prev, guess])
-  }, [state.guess]);
+  }, [word, state.guess]);
 
   const handleDeletePress = useCallback(() => {
     dispatch({ type: 'delete' });
-  }, [state.guess]);
+  }, []);
 
   const usedLetters = useMemo(() => getUsedLetters(history), [history]);
-  const boardData = useMemo(() => getBoardData(history, state.guess), [state]);
-  const result = useMemo(() => getResult(history, word), [history]);
+  const boardData = useMemo(() => getBoardData(history, state.guess), [history, state]);
+  const result = useMemo(() => getResult(history, word), [history, word]);
 
   useEffect(() => {
     if (onBoardChange) {
       onBoardChange(boardData);
     }
-  }, [boardData]);
+  }, [boardData, onBoardChange]);
 
   return (
     <>

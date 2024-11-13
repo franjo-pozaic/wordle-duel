@@ -13,12 +13,11 @@ export type GameData = {
     id: string;
 }
 
-export const WordleDuel: React.FC<any> = () => {
-    const { gameId } = useLoaderData() as any;
+export const WordleDuel: React.FC = () => {
+    const { gameId } = useLoaderData() as { gameId: string };
     const [gameData, setGameData] = useState<GameData>();
     const socketRef = useRef<Socket | null>(null);
     const [boardData, setBoardData] = useState<Letter[][]>([[]]);
-    const [socketId, setSocketId] = useState<any>();
 
     useEffect(() => {
         if (gameId === 'new') {
@@ -35,7 +34,7 @@ export const WordleDuel: React.FC<any> = () => {
                 .then(res => res.json())
                 .then(data => setGameData(data));
         }
-    }, []);
+    }, [gameId]);
 
     useEffect(() => {
         function onBoardData(value: Letter[][]) {
@@ -47,10 +46,9 @@ export const WordleDuel: React.FC<any> = () => {
             socketRef.current = getSocket(gameData.id);
             socketRef.current.on('connect', () => {
                 socketRef.current?.on('move', onBoardData);
-                setSocketId(socketRef.current?.id);
             })
         }
-    }, [gameData, getSocket]);
+    }, [gameData]);
 
     const handleBoardChange = useCallback((board: Letter[][]) => {
         console.log('Board change!');
@@ -60,7 +58,6 @@ export const WordleDuel: React.FC<any> = () => {
 
     return (
         <>
-            {socketRef.current && <p>Socket: {socketId}</p>}
             {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
             <div className='duel-board-container'>
                 <div className='my-board'>
