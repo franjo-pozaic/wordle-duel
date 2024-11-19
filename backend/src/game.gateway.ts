@@ -15,13 +15,18 @@ export class GameGateway {
 		this.logger.log('Initialize ChatGateway!');
 	}
 
-	handleConnection(client: Socket, ...args: any[]) {
+	async handleConnection(client: Socket, ...args: any[]) {
         const gameId = client.handshake.query.gameId as string;
         if (!this.gameService.gameExists(gameId)) {
             client.disconnect();
             this.logger.log(`Game ${gameId} doesn't exist, client disconnected: ${client.id}`);
         } else {
-            client.join(gameId);
+            await client.join(gameId);
+            this.gameService.addPlayer(gameId, client.id);
+
+            if (this.gameService.allPlayersJoined(gameId)) {
+                this.wss.to(gameId).emit('ready');
+            }
             this.logger.log(`Client connected: ${client.id}`);
             this.logger.log(`Client ${client.id} joined room: ${gameId}`);
 

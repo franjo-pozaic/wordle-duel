@@ -30,4 +30,9 @@ export class GameService {
     addPlayer(gameId: string, playerId: string) {
         this.gameRepository.addPlayer(gameId, playerId);
     }
+
+    allPlayersJoined(gameId: string) {
+        const game = this.gameRepository.getGame(gameId);
+        return game && game.players.length == 2;
+    }
 }

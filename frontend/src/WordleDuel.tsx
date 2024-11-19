@@ -7,6 +7,7 @@ import { Socket } from 'socket.io-client';
 import { Letter } from './models';
 import { useLoaderData } from 'react-router-dom';
 import { Board } from './Board';
+import { getBoardData } from './utils/boardUtils';
 
 export type GameData = {
     word: string;
@@ -17,7 +18,9 @@ export const WordleDuel: React.FC = () => {
     const { gameId } = useLoaderData() as { gameId: string };
     const [gameData, setGameData] = useState<GameData>();
     const socketRef = useRef<Socket | null>(null);
-    const [boardData, setBoardData] = useState<Letter[][]>([[]]);
+    const initialBoardData = getBoardData([[]], '')
+    const [boardData, setBoardData] = useState<Letter[][]>(initialBoardData);
+    const [ready, setReady] = useState<boolean>(false);
 
     useEffect(() => {
         if (gameId === 'new') {
@@ -41,12 +44,21 @@ export const WordleDuel: React.FC = () => {
             console.log(value);
             setBoardData(value);
         }
+
+        function onReadySignal() {
+            console.log('Ready signal received!');
+            
+            setReady(true);
+        }
         if (gameData) {
             console.log('getSocket effect');
             socketRef.current = getSocket(gameData.id);
             socketRef.current.on('connect', () => {
-                socketRef.current?.on('move', onBoardData);
-            })
+                console.log('Connected');
+                
+            });
+            socketRef.current?.on('move', onBoardData);
+            socketRef.current?.on('ready', onReadySignal);
         }
     }, [gameData]);
 
@@ -59,6 +71,7 @@ export const WordleDuel: React.FC = () => {
     return (
         <>
             {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
+            {<p>Is game ready?: {ready.toString()}</p>}
             <div className='duel-board-container'>
                 <div className='my-board'>
                     {gameData && <Wordle
