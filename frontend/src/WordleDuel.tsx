@@ -21,6 +21,15 @@ export const WordleDuel: React.FC = () => {
     const initialBoardData = getBoardData([[]], '')
     const [boardData, setBoardData] = useState<Letter[][]>(initialBoardData);
     const [ready, setReady] = useState<boolean>(false);
+    const [countdown, setCountdown] = useState(10);
+
+    useEffect(() => {
+        if (ready == true && countdown > 0) {
+            setTimeout(() => {
+                setCountdown(prev => prev - 1);
+            }, 1000);            
+        }
+    }, [ready, countdown]);
 
     useEffect(() => {
         if (gameId === 'new') {
@@ -40,38 +49,32 @@ export const WordleDuel: React.FC = () => {
     }, [gameId]);
 
     useEffect(() => {
-        function onBoardData(value: Letter[][]) {
-            console.log(value);
-            setBoardData(value);
-        }
-
-        function onReadySignal() {
-            console.log('Ready signal received!');
-            
-            setReady(true);
-        }
         if (gameData) {
             console.log('getSocket effect');
             socketRef.current = getSocket(gameData.id);
             socketRef.current.on('connect', () => {
                 console.log('Connected');
-                
+
             });
-            socketRef.current?.on('move', onBoardData);
-            socketRef.current?.on('ready', onReadySignal);
+            socketRef.current?.on('move', (value: Letter[][]) => {
+                setBoardData(value);
+            });
+            socketRef.current?.on('ready', () => {
+                setReady(true);
+            });
         }
     }, [gameData]);
 
     const handleBoardChange = useCallback((board: Letter[][]) => {
         console.log('Board change!');
-        
+
         socketRef.current?.emit('move', board);
     }, []);
 
     return (
         <>
             {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
-            {<p>Is game ready?: {ready.toString()}</p>}
+            {ready === false ? <p>Waiting for opponent</p> : <p>{countdown}</p>}
             <div className='duel-board-container'>
                 <div className='my-board'>
                     {gameData && <Wordle
