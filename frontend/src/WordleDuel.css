@@ -1,9 +1,31 @@
 .duel-board-container {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .opponent-board {
-    filter: blur(10px);
-    /* transform: scale(0.8); */
+    filter: blur(15px);
+    transform: scale(0.5);
+}
+
+.my-board {
+    position: relative;
+}
+
+.blurred {   
+    /* filter: blur(12px); */
+}
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+}
+
+.unclickable {
+    pointer-events: none;
 }

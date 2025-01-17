@@ -9,12 +9,14 @@
 .keyboard-row {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 10px;
     min-width: 600px;
-    min-height: 50px;
 }
 
 .keyboard-letter {
+    padding: 10px;
+    max-width: 50px;
+    max-height: 50px;
     display: flex;
     align-items: center;
     font-size: var(--font-size-large);
