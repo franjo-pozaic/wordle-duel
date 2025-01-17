@@ -74,12 +74,23 @@ export const WordleDuel: React.FC = () => {
     return (
         <>
             {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
-            {ready === false ? <p>Waiting for opponent</p> : <p>{countdown}</p>}
             <div className='duel-board-container'>
                 <div className='my-board'>
-                    {gameData && <Wordle
-                        word={gameData.word}
-                        onBoardChange={handleBoardChange} />}
+                    <div className={!ready || countdown > 0 ? 'blurred unclickable' : ''}>
+                        {
+                            gameData && 
+                            <Wordle word={gameData.word} onBoardChange={handleBoardChange} />
+                        }
+                    </div>
+                    <div className='text-overlay'>
+                        <p>
+                            {
+                                ready === false ? 
+                                <p>Waiting for opponent</p> :
+                                <p>{countdown > 0 ? countdown : ''}</p>}
+                        </p>
+                    
+                    </div>
                 </div>
                 <div className='opponent-board'>
                     {gameData && <Board boardData={boardData} />}
