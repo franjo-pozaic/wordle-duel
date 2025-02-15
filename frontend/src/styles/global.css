@@ -1,9 +1,8 @@
 #root {
     max-width: 100%;
-    margin: 0 auto;
-    padding: 2rem;
+    flex: 1;
     text-align: center;
-    box-sizing: border-box;
+    margin: 0 2px;
 }
 
 
@@ -37,7 +36,7 @@
 }
 
 .keyboard-letter {
-    background-color: var(--color-wrong);
+    /* background-color: var(--color-wrong);
     font-size: var(--font-size-large);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius); */
 }
