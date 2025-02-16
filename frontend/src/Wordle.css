@@ -1,7 +1,7 @@
 .wordle-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 5px;
     max-width: 90%;
     justify-content: center;
     margin: 0 auto;
@@ -27,7 +27,6 @@
     font-weight: var(--font-weight-large);
     text-transform: uppercase;
     border: 2px solid #dee1e9;
-    border-radius: 5px;
     color: var(--font-color-initial);
     transition: background-color 0.3s ease, color 0.3s ease;
 }

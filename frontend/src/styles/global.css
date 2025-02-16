@@ -2,7 +2,7 @@
     max-width: 100%;
     flex: 1;
     text-align: center;
-    margin: 0 2px;
+    margin: 0 5px;
 }
 
 
@@ -33,10 +33,4 @@
 
 .letter.initial {
     color: #333;
-}
-
-.keyboard-letter {
-    /* background-color: var(--color-wrong);
-    font-size: var(--font-size-large);
-    border-radius: var(--border-radius); */
 }

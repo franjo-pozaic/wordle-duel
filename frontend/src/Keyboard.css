@@ -3,30 +3,37 @@
     direction: row;
     flex-flow: column wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .keyboard-row {
     display: flex;
-    gap: 5px;
     justify-content: center;
     width: 100%;
 }
 
-.keyboard-row:nth-child(2) {
-    max-width: 90%;
-    margin: 0 auto;
-}
-
-
 .keyboard-letter {
-    border: 1px solid;
+    border: 0;
     flex: 1;
+    margin: 0px 5px 0px 0px;
+    color: black;
+    background-color: lightgray;
+    font-weight: bold;
     text-align: center;
-    padding: 10px 5px;
+    padding: 15px 5px;
     border-radius: 5px;
 }
 
+.keyboard-letter:last-of-type {
+    margin: 0px;
+}
+
 .special-letter {
-    font-size: small;
+    font-size: x-small;
+    flex: 1.5;
+}
+
+.letter-spacer {
+    margin: 0px;
+    flex: 0.5;
 }
