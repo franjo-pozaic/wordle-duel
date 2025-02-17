@@ -78,7 +78,9 @@ export const Keyboard: React.FC<KeyboardProps> = ({ disable, usedLetters, onKeyP
                 </div>
                 <div className="keyboard-row">
                     <button
-                        className="keyboard-letter special-letter">
+                        role="enter"
+                        className="keyboard-letter special-letter"
+                        onClick={() => handleKeyPress('ENTER')}>
                         ENTER
                     </button>
                     {qwertyKeyboard[2].map(letter =>
@@ -90,7 +92,10 @@ export const Keyboard: React.FC<KeyboardProps> = ({ disable, usedLetters, onKeyP
                             {letter}
                         </button>
                     )}
-                    <button className="keyboard-letter special-letter">
+                    <button 
+                        role="delete"
+                        className="keyboard-letter special-letter"
+                        onClick={() => handleKeyPress('DELETE')}>
                         <DeleteIcon />
                     </button>
                 </div>

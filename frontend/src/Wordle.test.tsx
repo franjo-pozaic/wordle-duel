@@ -50,7 +50,9 @@ describe('Wordle component', () => {
 
             for (const word of guessWords) {
                 await enterWord(word);
-                await clickLetter('ENT');
+
+                const enterButton = await screen.findByRole('enter');
+                await fireEvent.click(enterButton);
             }
         });
         
@@ -88,7 +90,8 @@ describe('Wordle component', () => {
             render(<Wordle word={'APPLE'} key={1} />);
 
             await enterWord(partiallyGoodGuess);
-            await clickLetter('ENT');
+            const enterButton = await screen.findByRole('enter');
+            await fireEvent.click(enterButton);
         });
         
         test('should show the correct letter style', async () => {
@@ -116,7 +119,8 @@ describe('Wordle component', () => {
         expect(squares.at(0)?.innerHTML).toBe('A');
         expect(squares.at(1)?.innerHTML).toBe('B');
         
-        await clickLetter('DEL');
+        const deleteButton = await screen.findByRole('delete');
+        await fireEvent.click(deleteButton);
 
         const squaresAfterDelete = await screen.findAllByRole('letter'); 
         expect(squaresAfterDelete.at(0)?.innerHTML).toBe('A');
