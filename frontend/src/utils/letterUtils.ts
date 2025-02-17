@@ -6,8 +6,8 @@ export const getUsedLetters = (history: Letter[][]) => {
     return [...new Set(usedLetters)];
 }
 
-export const getLetterModel = (currentWord: string, word: string) => {
-    return currentWord
+export const getWordStatus = (currentWord: string, word: string) => {
+  return currentWord
     .split('')
     .map((letter, index) => ({
       char: letter,
