@@ -4,3 +4,11 @@ export type Letter = {
   char: string;
   status: Status;
 }
+
+
+export type GameSummary = Status[][]
+
+export type GameData = {
+    word: string;
+    id: string;
+}

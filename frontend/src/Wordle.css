@@ -7,6 +7,40 @@
     margin: 0 auto;
 }
 
+.wordle-row {
+    position: relative;
+    display: inline-block; /* or block, depending on your layout */
+    margin: 0 auto;
+  }
+
+.row-dots {
+    position: absolute;
+    margin: -30px 0vw 0vw 45px;
+    display: inline-block;
+}
+
+.horizontal-dots {
+    display: flex;
+    gap: 4px;
+    flex-direction: row;
+}
+  
+.horizontal-dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.horizontal-dots .partial { 
+    background-color:  var(--color-partial);
+}
+
+.horizontal-dots .correct { 
+    background-color:  var(--color-correct);
+}
+
+
 .wordle-container {
     display: flex;
     flex-direction: column;

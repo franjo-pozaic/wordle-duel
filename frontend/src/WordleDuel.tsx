@@ -1,27 +1,19 @@
 import './styles/global.css';
 import './WordleDuel.css';
 import { Wordle } from './Wordle';
-import { getSocket } from './socket';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Socket } from 'socket.io-client';
-import { Letter } from './models';
-import { useLoaderData } from 'react-router-dom';
-import { Board } from './Board';
-import { getBoard } from './utils/boardUtils';
+import { useCallback, useEffect, useState } from 'react';
+import { GameSummary, Letter } from './models';
+import { getSummary } from './utils/boardUtils';
+import { OpponentContext } from './OpponentContext';
+import { useGameSocket } from './hooks/useGameSocket';
+import { useGameData, useGameId } from './hooks/useGameData';
 
-export type GameData = {
-    word: string;
-    id: string;
-}
 
 export const WordleDuel: React.FC = () => {
-    const { gameId } = useLoaderData() as { gameId: string };
-    const [gameData, setGameData] = useState<GameData>();
-    const socketRef = useRef<Socket | null>(null);
-    const initialBoardData = getBoard([], '', '')
-    const [boardData, setBoardData] = useState<Letter[][]>(initialBoardData);
-    const [ready, setReady] = useState<boolean>(false);
+    const gameId = useGameId();
     const [countdown, setCountdown] = useState(10);
+    const gameData = useGameData(gameId);
+    const { boardData, ready, socketRef } = useGameSocket(gameData)
 
     useEffect(() => {
         if (ready == true && countdown > 0) {
@@ -31,45 +23,13 @@ export const WordleDuel: React.FC = () => {
         }
     }, [ready, countdown]);
 
-    useEffect(() => {
-        if (gameId === 'new') {
-            fetch('http://localhost:3000/game', {
-                method: 'POST',
-                body: JSON.stringify({})
-            })
-                .then(res => res.json())
-                .then(data => setGameData(data));
-        } else {
-            fetch(`http://localhost:3000/game/${gameId}`, {
-                method: 'GET',
-            })
-                .then(res => res.json())
-                .then(data => setGameData(data));
-        }
-    }, [gameId]);
 
-    useEffect(() => {
-        if (gameData) {
-            console.log('getSocket effect');
-            socketRef.current = getSocket(gameData.id);
-            socketRef.current.on('connect', () => {
-                console.log('Connected');
-
-            });
-            socketRef.current?.on('move', (value: Letter[][]) => {
-                setBoardData(value);
-            });
-            socketRef.current?.on('ready', () => {
-                setReady(true);
-            });
-        }
-    }, [gameData]);
 
     const handleBoardChange = useCallback((board: Letter[][]) => {
-        console.log('Board change!');
-
         socketRef.current?.emit('move', board);
     }, []);
+
+    const opponentSummary: GameSummary = getSummary(boardData);
 
     return (
         <>
@@ -79,24 +39,22 @@ export const WordleDuel: React.FC = () => {
                     <div className={!ready || countdown > 0 ? 'blurred unclickable' : ''}>
                         {
                             gameData && 
-                            <Wordle word={gameData.word} onBoardChange={handleBoardChange} />
+                            <OpponentContext.Provider value={opponentSummary}>
+                                <Wordle word={gameData.word} onBoardChange={handleBoardChange} />
+                            </OpponentContext.Provider>
                         }
                     </div>
                     <div className='text-overlay'>
-                        <p>
+                        <div>
                             {
                                 ready === false ? 
                                 <p>Waiting for opponent</p> :
                                 <p>{countdown > 0 ? countdown : ''}</p>}
-                        </p>
+                        </div>
                     
                     </div>
-                </div>
-                <div className='opponent-board'>
-                    {gameData && <Board boardData={boardData} />}
                 </div>
             </div>
         </>
     )
 }
-

@@ -1,4 +1,4 @@
-import { Letter } from "../models";
+import { GameSummary, Letter } from "../models";
 import { getWordStatus } from "./letterUtils";
 
 const emptyLetter: Letter = { char: '', status: 'INITIAL' };
@@ -22,3 +22,15 @@ export const getBoard = (history: string[], currentGuess: string, word: string) 
     
     return filledBoard;
 }
+
+
+export const getSummary = (boardData: Letter[][]) => {
+    const opponentSummary: GameSummary = [];
+    for (const guess of boardData) {
+        const correctLetters = guess.filter(x => x.status === 'CORRECT').map(x => x.status);
+        const partialLetters = guess.filter(x => x.status === 'PARTIAL').map(x => x.status);
+        opponentSummary.push([...correctLetters, ...partialLetters]);
+    }
+    return opponentSummary;
+}
+
