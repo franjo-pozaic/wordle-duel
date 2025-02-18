@@ -37,7 +37,8 @@ export const Wordle: React.FC<{ word: string, onBoardChange?: (board: LetterMode
     setGuess('');
     setHistory(newHistory);
     if (onBoardChange) {
-      onBoardChange(getBoard(history, guess, word));
+      const board = getBoard(newHistory, guess, word);
+      onBoardChange(board);
     }
   }, [word, guess]);
 
