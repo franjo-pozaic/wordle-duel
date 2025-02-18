@@ -7,7 +7,7 @@ import { Socket } from 'socket.io-client';
 import { Letter } from './models';
 import { useLoaderData } from 'react-router-dom';
 import { Board } from './Board';
-import { getBoardData } from './utils/boardUtils';
+import { getBoard } from './utils/boardUtils';
 
 export type GameData = {
     word: string;
@@ -18,7 +18,7 @@ export const WordleDuel: React.FC = () => {
     const { gameId } = useLoaderData() as { gameId: string };
     const [gameData, setGameData] = useState<GameData>();
     const socketRef = useRef<Socket | null>(null);
-    const initialBoardData = getBoardData([[]], '')
+    const initialBoardData = getBoard([], '', '')
     const [boardData, setBoardData] = useState<Letter[][]>(initialBoardData);
     const [ready, setReady] = useState<boolean>(false);
     const [countdown, setCountdown] = useState(10);

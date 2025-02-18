@@ -1,5 +1,3 @@
-import { Letter } from "../models";
-
 export const getResult = (history: string[], word: string) => {
     if (history.length === 0) {
       return undefined;
