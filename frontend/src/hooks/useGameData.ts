@@ -11,14 +11,14 @@ export function useGameData(gameId: string) {
     const [gameData, setGameData] = useState<GameData>();
     useEffect(() => {
         if (gameId === 'new') {
-            fetch('http://localhost:3000/game', {
+            fetch('/api/game', {
                 method: 'POST',
                 body: JSON.stringify({})
             })
                 .then(res => res.json())
                 .then(data => setGameData(data));
         } else {
-            fetch(`http://localhost:3000/game/${gameId}`, {
+            fetch(`/api/game/${gameId}`, {
                 method: 'GET',
             })
                 .then(res => res.json())
