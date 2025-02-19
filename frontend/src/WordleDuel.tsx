@@ -7,6 +7,7 @@ import { getSummary } from './utils/boardUtils';
 import { OpponentContext } from './OpponentContext';
 import { useGameSocket } from './hooks/useGameSocket';
 import { useGameData, useGameId } from './hooks/useGameData';
+import { CopyButton } from './CopyToClipboard';
 
 
 export const WordleDuel: React.FC = () => {
@@ -23,17 +24,19 @@ export const WordleDuel: React.FC = () => {
         }
     }, [ready, countdown]);
 
-
-
     const handleBoardChange = useCallback((board: Letter[][]) => {
         socketRef.current?.emit('move', board);
     }, []);
 
     const opponentSummary: GameSummary = getSummary(boardData);
 
+    function getGameLink(id: string) {
+        return `${window.origin}/duel/${id}`;
+    }
+
     return (
         <>
-            {gameData && <p>{`http://localhost:5173/duel/${gameData.id}`}</p>}
+            {gameData && <CopyButton text={getGameLink(gameData.id)} />}
             <div className='duel-board-container'>
                 <div className='my-board'>
                     <div className={!ready || countdown > 0 ? 'blurred unclickable' : ''}>
